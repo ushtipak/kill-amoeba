@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Kill Amoeba</title>
+    <script src="//cdn.jsdelivr.net/npm/phaser@3.19.0/dist/phaser.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <script type="text/javascript">
+
+        let config = {
+            type: Phaser.AUTO,
+            width: 920,
+            height: 680,
+            physics: {
+                default: 'arcade',
+                arcade: {
+                    gravity: {
+                        y: 0
+                    },
+                    debug: false
+                }
+            },
+            scene: {
+                preload: preload,
+                create: create,
+                update: update
+            }
+        };
+        let game = new Phaser.Game(config);
+        let amoebas;
+        let killed = 0;
+        let killedText;
+        let health = 3;
+
+        function preload() {
+            this.load.image('background', 'assets/background.png');
+            this.load.image('amoeba-lassie', 'assets/amoeba-lassie.png');
+        }
+
+        function create() {
+            this.add.image(460, 340, 'background');
+
+            amoebas = this.physics.add.group();
+            let amoeba = amoebas.create(Phaser.Math.Between(0, 600), Phaser.Math.Between(0, 400), 'amoeba-lassie').setInteractive();
+            amoeba.setBounce(1);
+            amoeba.setCollideWorldBounds(true);
+            amoeba.setVelocity(
+                Phaser.Math.Between(-400, 400),
+                Phaser.Math.Between(-400, 400)
+            );
+            amoeba.on('pointerdown', function (pointer) {
+                hitAmoeba(this)
+            });
+            amoeba.on('pointerup', function (pointer) {
+                this.clearTint();
+            });
+            amoeba.on('pointerout', function (pointer) {
+                this.clearTint();
+            });
+
+            killedText = this.add.text(20, 20, '> 0 amoebas killed', {fontSize: '24px', fill: '#000'});
+        }
+
+        function update() {
+
+        }
+        
+        function hitAmoeba(amoeba) {
+            amoeba.setTint(0xff0000);
+            health -= 1;
+            console.log(health);
+            if (health === 0) {
+                amoeba.disableBody(true, true)
+                killed += 1;
+                killedText.setText('> ' + killed + ' amoebas killed');
+                amoeba.enableBody(true, Phaser.Math.Between(0, 600), Phaser.Math.Between(0, 400), true, true);
+                amoeba.setBounce(1);
+                amoeba.setCollideWorldBounds(true);
+                amoeba.setVelocity(
+                    Phaser.Math.Between(-400, 400),
+                    Phaser.Math.Between(-400, 400)
+                );
+                health = 3;
+            }
+        }
+
+    </script>
+</body>
+</html>

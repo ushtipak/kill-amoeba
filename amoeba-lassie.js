@@ -17,7 +17,7 @@ class AmoebaLassie extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('background', 'assets/background.jpg');
+        this.load.image('background-lassie', 'assets/background-lassie.jpg');
         this.load.image('amoeba-lassie', 'assets/amoeba-lassie.png');
         this.load.image('java-rant-1', 'assets/java-rant-1.png');
         this.load.image('java-rant-2', 'assets/java-rant-2.png');
@@ -34,17 +34,17 @@ class AmoebaLassie extends Phaser.Scene {
 
     create() {
         let add = this.add;
-        add.image(460, 340, 'background');
+        add.image(460, 340, 'background-lassie');
 
         lassieAmoebas = this.physics.add.group();
         hackles = this.physics.add.group();
 
         let complain = this.sound.add("golang", {loop: false});
         let lassieAmoeba = lassieAmoebas.create(Phaser.Math.Between(...lassiePosX), Phaser.Math.Between(...lassiePosY), 'amoeba-lassie').setInteractive();
-        spawn(lassieAmoeba);
+        spawnLassie(lassieAmoeba);
 
         lassieAmoeba.on('pointerdown', function (pointer) {
-            hit(this);
+            hitLassie(this);
             if (Phaser.Math.Between(1, 7) === 3) {
                 complain.play();
             }
@@ -63,7 +63,7 @@ class AmoebaLassie extends Phaser.Scene {
     }
 }
 
-function spawn(lassieAmoeba) {
+function spawnLassie(lassieAmoeba) {
     lassieAmoeba.enableBody(true, Phaser.Math.Between(...lassiePosX), Phaser.Math.Between(...lassiePosY), true, true);
     lassieAmoeba.setVelocity(Phaser.Math.Between(...lassieVelX), Phaser.Math.Between(...lassieVelY));
     lassieAmoeba.setCollideWorldBounds(true);
@@ -71,16 +71,16 @@ function spawn(lassieAmoeba) {
     lassieHealth = lassieInitHealth;
 }
 
-function hit(lassieAmoeba) {
+function hitLassie(lassieAmoeba) {
     lassieHealth -= 1;
     if (lassieHealth === 0) {
-        kill(lassieAmoeba)
+        killLassie(lassieAmoeba)
     }
 }
 
-function kill(lassieAmoeba) {
+function killLassie(lassieAmoeba) {
     lassieAmoeba.disableBody(true, true);
     lassieKilled += 1;
     lassieKilledText.setText('amoebas killed: ' + lassieKilled);
-    spawn(lassieAmoeba);
+    spawnLassie(lassieAmoeba);
 }

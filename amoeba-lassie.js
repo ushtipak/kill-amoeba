@@ -1,18 +1,19 @@
-let initHealth = 5;
-let health;
+let lassieInitHealth = 5;
+let lassiePosX = [0, 600];
+let lassiePosY = [0, 400];
+let lassieVelX = [-400, 400];
+let lassieVelY = [-400, 400];
+let lassieHealth = lassieInitHealth;
+let lassieKilled = 0;
+let lassieKilledText;
+let lassieAmoebas;
 let hackles;
-let amoebaPosX = [0, 600];
-let amoebaPosY = [0, 400];
-let amoebaVelX = [-400, 400];
-let amoebaVelY = [-400, 400];
 let hackleVelX = [-270, 280];
 let hackleVelY = [-145, 160];
 
 class AmoebaLassie extends Phaser.Scene {
     constructor() {
         super({key: "AmoebaLassie"});
-        health = initHealth;
-        killed = 0;
     }
 
     preload() {
@@ -35,14 +36,14 @@ class AmoebaLassie extends Phaser.Scene {
         let add = this.add;
         add.image(460, 340, 'background');
 
-        amoebas = this.physics.add.group();
+        lassieAmoebas = this.physics.add.group();
         hackles = this.physics.add.group();
 
         let complain = this.sound.add("golang", {loop: false});
-        let amoeba = amoebas.create(Phaser.Math.Between(...amoebaPosX), Phaser.Math.Between(...amoebaPosY), 'amoeba-lassie').setInteractive();
-        spawn(amoeba);
+        let lassieAmoeba = lassieAmoebas.create(Phaser.Math.Between(...lassiePosX), Phaser.Math.Between(...lassiePosY), 'amoeba-lassie').setInteractive();
+        spawn(lassieAmoeba);
 
-        amoeba.on('pointerdown', function (pointer) {
+        lassieAmoeba.on('pointerdown', function (pointer) {
             hit(this);
             if (Phaser.Math.Between(1, 7) === 3) {
                 complain.play();
@@ -56,30 +57,30 @@ class AmoebaLassie extends Phaser.Scene {
                 families: ['Nosifer']
             },
             active: function() {
-                killedText = add.text(20, 20, 'amoebas killed: 0', {fontFamily: 'Nosifer', fontSize: 42, color: 'Red' });
+                lassieKilledText = add.text(20, 20, 'amoebas killed: 0', {fontFamily: 'Nosifer', fontSize: 42, color: 'Red' });
             }
         });
     }
 }
 
-function spawn(amoeba) {
-    amoeba.enableBody(true, Phaser.Math.Between(...amoebaPosX), Phaser.Math.Between(...amoebaPosY), true, true);
-    amoeba.setVelocity(Phaser.Math.Between(...amoebaVelX), Phaser.Math.Between(...amoebaVelY));
-    amoeba.setCollideWorldBounds(true);
-    amoeba.setBounce(1);
-    health = initHealth;
+function spawn(lassieAmoeba) {
+    lassieAmoeba.enableBody(true, Phaser.Math.Between(...lassiePosX), Phaser.Math.Between(...lassiePosY), true, true);
+    lassieAmoeba.setVelocity(Phaser.Math.Between(...lassieVelX), Phaser.Math.Between(...lassieVelY));
+    lassieAmoeba.setCollideWorldBounds(true);
+    lassieAmoeba.setBounce(1);
+    lassieHealth = lassieInitHealth;
 }
 
-function hit(amoeba) {
-    health -= 1;
-    if (health === 0) {
-        kill(amoeba)
+function hit(lassieAmoeba) {
+    lassieHealth -= 1;
+    if (lassieHealth === 0) {
+        kill(lassieAmoeba)
     }
 }
 
-function kill(amoeba) {
-    amoeba.disableBody(true, true);
-    killed += 1;
-    killedText.setText('amoebas killed: ' + killed);
-    spawn(amoeba);
+function kill(lassieAmoeba) {
+    lassieAmoeba.disableBody(true, true);
+    lassieKilled += 1;
+    lassieKilledText.setText('amoebas killed: ' + lassieKilled);
+    spawn(lassieAmoeba);
 }

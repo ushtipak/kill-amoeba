@@ -75,4 +75,6 @@ function killPigeon(pigeonAmoeba) {
     pigeonKilled += 1;
     pigeonKilledText.setText('amoebas killed: ' + pigeonKilled);
     spawnPigeon(pigeonAmoeba);
+    pigeonAmoeba = pigeonAmoebas.create(Phaser.Math.Between(...pigeonPosX), Phaser.Math.Between(...pigeonPosY), 'amoeba-pigeon').setInteractive();
+    spawnPigeon(pigeonAmoeba);
 }

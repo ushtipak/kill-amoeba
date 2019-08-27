@@ -17,7 +17,7 @@ class AmoebaLassie extends Phaser.Scene {
 
     preload() {
         this.load.image('background', 'assets/background.jpg');
-        this.load.image('amoeba-lassie', 'assets/amoeba-lassie-xmass-edition.png');
+        this.load.image('amoeba-lassie', 'assets/amoeba-lassie.png');
         this.load.image('java-rant-1', 'assets/java-rant-1.png');
         this.load.image('java-rant-2', 'assets/java-rant-2.png');
         this.load.image('java-rant-3', 'assets/java-rant-3.png');

@@ -16,7 +16,10 @@ class AmoebaPigeon extends Phaser.Scene {
     preload() {
         this.load.image('background-pigeon', 'assets/background-pigeon.jpg');
         this.load.image('amoeba-pigeon', 'assets/amoeba-pigeon.png');
-        this.load.image('glass', 'assets/glass-pane.jpg');
+        this.load.image('back-white', 'assets/back-white.png');
+        this.load.image('glass-3', 'assets/glass-3.png');
+        this.load.image('glass-1', 'assets/glass-1.png');
+        this.load.image('glass-2', 'assets/glass-2.png');
         this.load.audio('pigeon', 'assets/pigeon.mp3');
         this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
     }
@@ -24,12 +27,18 @@ class AmoebaPigeon extends Phaser.Scene {
     create() {
         let add = this.add;
         add.image(460, 340, 'background-pigeon');
+        let back = this.physics.add.image(880, 25, "back-white");
+        back.setInteractive();
+        back.setInteractive();
+        back.on('pointerdown', function (event) {
+            this.scene.start("Splash");
+        }, this);
 
         let slides = this.physics.add.staticGroup();
-        slides.create(195, 645, 'glass');
-        slides.create(820, 10, 'glass');
-        slides.create(750, 380, 'glass');
-        slides.create(50, 280, 'glass');
+        slides.create(195, 645, 'glass-1');
+        slides.create(820, 10, 'glass-1');
+        slides.create(750, 380, 'glass-2');
+        slides.create(50, 280, 'glass-3');
 
         pigeonAmoebas = this.physics.add.group();
 

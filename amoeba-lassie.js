@@ -19,6 +19,7 @@ class AmoebaLassie extends Phaser.Scene {
     preload() {
         this.load.image('background-lassie', 'assets/background-lassie.jpg');
         this.load.image('amoeba-lassie', 'assets/amoeba-lassie.png');
+        this.load.image('back-red', 'assets/back-red.png');
         this.load.image('java-rant-1', 'assets/java-rant-1.png');
         this.load.image('java-rant-2', 'assets/java-rant-2.png');
         this.load.image('java-rant-3', 'assets/java-rant-3.png');
@@ -35,6 +36,11 @@ class AmoebaLassie extends Phaser.Scene {
     create() {
         let add = this.add;
         add.image(460, 340, 'background-lassie');
+        let back = this.physics.add.image(880, 85, "back-red");
+        back.setInteractive();
+        back.on('pointerdown', function (event) {
+            this.scene.start("Splash");
+        }, this);
 
         lassieAmoebas = this.physics.add.group();
         hackles = this.physics.add.group();

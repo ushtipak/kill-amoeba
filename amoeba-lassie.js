@@ -14,8 +14,6 @@ let hackles;
 let hackleVelX = [-270, 280];
 let hackleVelY = [-145, 160];
 
-let endDelay;
-
 class AmoebaLassie extends Phaser.Scene {
     constructor() {
         super({key: "AmoebaLassie"});
@@ -44,10 +42,12 @@ class AmoebaLassie extends Phaser.Scene {
         let back = this.physics.add.image(880, 85, "back-red");
         back.setInteractive();
         back.on('pointerdown', function (event) {
+            lassieElapsed = 0;
+            lassieKilled = 0;
             this.scene.start("Splash");
         }, this);
 
-        lassieTime = this.time.addEvent({delay: 1000, callback: verifyRun, callbackScope: this, loop: true});
+        lassieTime = this.time.addEvent({delay: 1000, callback: verifyLassieRun, callbackScope: this, loop: true});
 
         lassieAmoebas = this.physics.add.group();
         hackles = this.physics.add.group();
@@ -99,17 +99,18 @@ function killLassie(lassieAmoeba) {
     spawnLassie(lassieAmoeba);
 }
 
-function verifyRun() {
+function verifyLassieRun() {
     lassieElapsed++;
     if (lassieElapsed === lassieCountdown) {
         lassieAmoebas.clear(true);
         hackles.clear(true);
         lassieElapsed = 0;
+        lassieKilled = 0;
         this.add.text(70, 260, 'game over', {fontFamily: 'Nosifer', fontSize: 100, color: 'Red' });
-        endDelay = this.time.delayedCall(2500, gameEnd, [], this);
+        this.time.delayedCall(2500, lassieGameEnd, [], this);
     }
 }
 
-function gameEnd() {
+function lassieGameEnd() {
     this.scene.start("Splash")
 }

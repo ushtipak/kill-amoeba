@@ -7,6 +7,9 @@ let pigeonHealth = pigeonInitHealth;
 let pigeonKilled = 0;
 let pigeonKilledText;
 let pigeonAmoebas;
+let pigeonTime;
+let pigeonElapsed = 0;
+let pigeonCountdown = 10;
 
 class AmoebaPigeon extends Phaser.Scene {
     constructor() {
@@ -31,8 +34,12 @@ class AmoebaPigeon extends Phaser.Scene {
         back.setInteractive();
         back.setInteractive();
         back.on('pointerdown', function (event) {
+            pigeonElapsed = 0;
+            pigeonKilled = 0;
             this.scene.start("Splash");
         }, this);
+
+        pigeonTime = this.time.addEvent({delay: 1000, callback: verifyPigeonRun, callbackScope: this, loop: true});
 
         let slides = this.physics.add.staticGroup();
         slides.create(195, 645, 'glass-1');
@@ -86,4 +93,19 @@ function killPigeon(pigeonAmoeba) {
     spawnPigeon(pigeonAmoeba);
     pigeonAmoeba = pigeonAmoebas.create(Phaser.Math.Between(...pigeonPosX), Phaser.Math.Between(...pigeonPosY), 'amoeba-pigeon').setInteractive();
     spawnPigeon(pigeonAmoeba);
+}
+
+function verifyPigeonRun() {
+    pigeonElapsed++;
+    if (pigeonElapsed === pigeonCountdown) {
+        pigeonAmoebas.clear(true);
+        pigeonElapsed = 0;
+        pigeonKilled = 0;
+        this.add.text(70, 260, 'game over', {fontFamily: 'Nosifer', fontSize: 100, color: 'Red' });
+        this.time.delayedCall(2500, pigeonGameEnd, [], this);
+    }
+}
+
+function pigeonGameEnd() {
+    this.scene.start("Splash")
 }

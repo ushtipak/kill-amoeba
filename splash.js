@@ -36,6 +36,7 @@ class Splash extends Phaser.Scene {
             },
             active: function() {
                 add.text(100, 50, 'Kill Amoeba', {fontFamily: 'Nosifer', fontSize: 80, color: 'White' });
+                add.text(460, 170, '(as many as possible in 10 sec)', { fontFamily: 'Finger Paint', fontSize: 20, color: 'White' });
 
                 add.text(260, 410, 'Lassie', { fontFamily: 'Finger Paint', fontSize: 40, color: 'White' });
                 add.text(660, 410, 'Pigeon', { fontFamily: 'Finger Paint', fontSize: 40, color: 'White' });
